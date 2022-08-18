@@ -1,0 +1,29 @@
+{
+  "name": "novatentativa",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@types/express": "^4.17.13",
+    "@types/sqlite3": "^3.1.8",
+    "express": "^4.18.1",
+    "reflect-metadata": "^0.1.13",
+    "sqlite3": "^5.0.11",
+    "ts-node-dev": "^2.0.0",
+    "typeorm": "^0.3.7",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^18.7.6",
+    "@types/uuid": "^8.3.4",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.7.4"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules --no-notify src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
