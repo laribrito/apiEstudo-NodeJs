@@ -1,14 +1,20 @@
-import { Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Column, PrimaryColumn} from "typeorm"
+import { 
+    Entity, 
+    JoinTable, 
+    ManyToMany, 
+    ManyToOne, 
+    PrimaryGeneratedColumn, 
+    CreateDateColumn, 
+    UpdateDateColumn, 
+    Column
+} from "typeorm"
 import { Roles } from "./roles";
 import { Activities } from "./activities";
 
 @Entity()
 export class Users {
-    @PrimaryGeneratedColumn("uuid") 
-    id: string
-
-    @PrimaryColumn()
-    user_pk: number;
+    @PrimaryGeneratedColumn() 
+    id: number
 
     @Column({ length: 90 })
     name: string;
@@ -19,14 +25,14 @@ export class Users {
     @Column()
     password: string;
 
-    @ManyToOne(() => Roles, (role_) => Roles.User)
-    role_: Roles
-
     @CreateDateColumn({update: false}) 
     created_at: Date;
 
-    @UpdateDateColumn({ name: 'updated_at'}) 
+    @UpdateDateColumn() 
     updated_at: Date;
+
+    @ManyToOne(() => Roles, (role_) => Roles.User)
+    role_: Roles
 
     @ManyToMany(() => Activities)
     @JoinTable()

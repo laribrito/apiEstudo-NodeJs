@@ -1,16 +1,13 @@
-import { Column, Entity, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
-import { Users } from "./users";
+import { Column, Entity, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm"
+import { Users } from "./users"
 
 @Entity()
 export class Posts{
-    @PrimaryGeneratedColumn("uuid")
-    id: string;
-
-    @PrimaryColumn()
-    posts_pk: number;
+    @PrimaryGeneratedColumn()
+    id: number
 
     @Column()
-    description: string;
+    description: string
 
     @ManyToOne(()=>Users, (user_)=> Users.Posts)
     user_: Users

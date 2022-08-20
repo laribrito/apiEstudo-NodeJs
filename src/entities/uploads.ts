@@ -1,14 +1,11 @@
-import { Column, Entity, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Posts } from "./posts";
 import { Activities } from "./activities";
 
 @Entity()
 export class Uploads{
-    @PrimaryGeneratedColumn("uuid")
-    id: string
-
-    @PrimaryColumn()
-    uploads_pk: number;
+    @PrimaryGeneratedColumn()
+    id: number
 
     @Column()
     relative_path: string;
