@@ -1,8 +1,12 @@
 import { Router } from "express";
+import { RoleController } from "./controllers/roleController";
 import { UserController } from "./controllers/userController";
+import { RolesController } from "./controllers/rolesController";
 
 const rotas = Router();
-const userController= new UserController();
+const usersController= new UserController();
+const roleController= new RoleController();
+const rolesController= new RolesController();
 
 rotas.get('/', (_request, res) => {
     res.json({
@@ -10,19 +14,19 @@ rotas.get('/', (_request, res) => {
     });
 });
 
-rotas.post("/novo-usuario", userController.insereUser);
+// Users
+rotas.post("/novo-usuario", usersController.insereUser);
 rotas.get("/usuarios", (_request, res)=>{
     res.json({
         message: 'retorna todos os usuarios'
     });
 });
 
-// rotas.post("/", (_request, res)=> {
-//     const { nome } = _request.body;
-//     console.log(nome);
-//     console.log("-----------------------");
-//     return res.json(nome);
-    
-// })
+// Roles
+rotas.post("/nova-funcao", roleController.insereFuncao)
+rotas.post("/atualiza-funcao", roleController.atualizaFuncao)
+rotas.get("/funcoes", rolesController.retornaTodasRoles)
+rotas.get("/funcao/:termoBusca", roleController.pegaUmaFuncao)
+rotas.get("/apaga-funcao/:termoBusca", roleController.apagaUmaFuncao)
 
 export {rotas};

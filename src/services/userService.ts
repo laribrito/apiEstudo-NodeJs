@@ -9,7 +9,7 @@ interface IUsersRequest{
 
 export class UsersService{
     async novoUsuario({name, email, password}:IUsersRequest){
-        const userRepository = AppDataSource.getRepository(Users) 
+        const repository = AppDataSource.getRepository(Users) 
         // ERRO: todos os campos são obrigatórios
         if(!name){
             throw new Error('Nome é obrigatório') 
@@ -20,14 +20,14 @@ export class UsersService{
         }
 
         // ERRO: esse usuario já existe
-        const busca = await userRepository.findOne({where: {email: email}})
+        const busca = await repository.findOne({where: {email: email}})
         if(busca){
             throw new Error('Esse usuário já existe. Cadastre um outro email') 
         }
         
         // SUCESSO
-        const user = userRepository.create({name, email, password}) 
-        await userRepository.save(user) 
+        const user = repository.create({name, email, password}) 
+        await repository.save(user) 
         return user 
     }   
 }
