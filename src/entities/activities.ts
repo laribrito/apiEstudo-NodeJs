@@ -3,7 +3,7 @@ import { Column, Entity, CreateDateColumn, PrimaryColumn, PrimaryGeneratedColumn
 @Entity()
 export class Activities{
     @PrimaryGeneratedColumn()
-    id: number
+    activite_id: number
 
     @Column()
     value: number

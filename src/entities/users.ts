@@ -14,7 +14,7 @@ import { Activities } from "./activities";
 @Entity()
 export class Users {
     @PrimaryGeneratedColumn() 
-    id: number
+    user_id: number
 
     @Column({ length: 90 })
     name: string;

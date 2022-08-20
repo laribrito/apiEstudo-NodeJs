@@ -5,7 +5,7 @@ import { Activities } from "./activities";
 @Entity()
 export class Uploads{
     @PrimaryGeneratedColumn()
-    id: number
+    upload_id: number
 
     @Column()
     relative_path: string;

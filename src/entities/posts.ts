@@ -4,7 +4,7 @@ import { Users } from "./users"
 @Entity()
 export class Posts{
     @PrimaryGeneratedColumn()
-    id: number
+    post_id: number
 
     @Column()
     description: string
