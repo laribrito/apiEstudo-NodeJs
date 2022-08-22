@@ -18,9 +18,14 @@ export class RoleService{
     repository = AppDataSource.getRepository(Roles)
     async novaRole({role_name}:IRolesRequestName){
         // ERRO: o campo é obrigatório
+        if(!role_name){
+            throw new Error("'role_name' é obrigatório")
+        }
+
+        // ERRO: role_name vazia
         role_name = role_name.trim()
         if(!role_name){
-            throw new Error("Nome da função é obrigatório")
+            throw new Error("Escreva alguma coisa em 'role_name'")
         }
 
         // ERRO: a função já existe
@@ -38,11 +43,16 @@ export class RoleService{
 
     async atualizaRole({role_id, role_name}:IRolesRequestFull){
         // ERRO: todos os campos são obrigatórios
-        role_name = role_name.trim()
         if(!role_id){
             throw new Error("'role_id' é obrigatório")
         } else if(!role_name){
             throw new Error("Novo 'role_name' é obrigatório")
+        }
+
+        // ERRO: role_name vazia
+        role_name = role_name.trim()
+        if(!role_name){
+            throw new Error("Escreva alguma coisa em 'role_name'")
         }
 
         // ERRO: não existe uma funcao com o role_id passado

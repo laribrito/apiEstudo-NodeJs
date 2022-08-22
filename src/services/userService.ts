@@ -122,9 +122,14 @@ export class UserService{
         }
 
         // ERRO: campo é obrigatório
-        name = name.trim()
         if(!name){
             throw new Error("'name' é obrigatório")
+        }
+
+        // ERRO: name vazio
+        name = name.trim()
+        if(!name){
+            throw new Error("Escreva alguma coisa em 'name'")
         }
 
         // SUCESSO
