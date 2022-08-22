@@ -3,6 +3,8 @@ import { Tokens } from "../entities/tokens";
 import { UserService } from "./userService";
 import * as bcrypt from 'bcrypt';
 import { jwt } from "..";
+import { threadId } from "worker_threads";
+import { Equal } from "typeorm";
 
 interface IAuthRequest{
     email: string
@@ -25,20 +27,20 @@ export class TokenService{
         
         // ERRO: não existe usuario com esse email
         const userService = new UserService()
-        const busca = await userService.buscaUsuarioPeloEmail({email});
-        if(!busca.encontrado){
+        const retorno = await userService.buscaUsuarioPeloEmail({email});
+        if(!retorno){
             throw new Error("Erro de autenticação")
         }
+        const user = retorno[0]
 
         // ERRO: senhas não coincidem
-        if(!await bcrypt.compare(password, String(busca.user?.password))) {
+        if(!await bcrypt.compare(password, String(user.password))) {
             throw new Error("Erro de autenticação")
         }
 
         // SUCESSO
-        const user_id = Number(busca.user?.user_id)
-        const token = String(jwt.sign({ user_id }, process.env.SECRET)); //Gera o token com base no user_id e na chave SECRET
-        const dadosToken = this.repository.create({token: token, user_id: busca.user});
+        const token = String(jwt.sign({ email }, process.env.SECRET)); //Gera o token com base no email e na chave SECRET
+        const dadosToken = this.repository.create({token: token, user_id: user});
         await this.repository.save(dadosToken);
         return token
     }
@@ -47,11 +49,11 @@ export class TokenService{
         // verifica o token
         const retorno = await this.verificaToken({token})
         if (!retorno){ 
-            throw new Error(String("Falha na autenticação"))
+            throw new Error(String("Você não tem autorização"))
         }
     
         // SUCESSO
-        await this.repository.delete({token})    
+        await this.repository.delete({token: token})    
         return {saiu: true}
     }
 
@@ -62,17 +64,29 @@ export class TokenService{
         }
 
         // ERRO: token não é válido
-        const resultado = await this.repository.find()
+        const resultado = await this.repository.findBy({token: token})
         if(!resultado.length){
             return false
-        } else {
-            // busca o user associado
-            const decoded= await jwt.verify(token, process.env.SECRET)
-            const user_id = decoded.user_id
-            const busca = await new UserService().buscaUsuarioPeloId({user_id});
-            // tratar a busca
-            const user = busca.user!=undefined?busca.user[0]:'';
-            return user
+        } 
+
+        // busca o user associado
+        const decoded= await jwt.verify(token, process.env.SECRET)
+        const email = String(decoded.email)
+        var user = await new UserService().pegaUsuarioPeloEmail({email});
+        return user
+    }
+
+    async logoutFull({token}:ITokenRequest){
+        const retorno = await this.verificaToken({token})
+        if(!retorno){
+            return false
         }
+        
+        await this.repository.delete({ user_id: Equal(retorno.user_id)})
+            .catch((erro) => {
+                return false
+            })
+        return true
+
     }
 }
