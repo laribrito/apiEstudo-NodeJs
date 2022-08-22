@@ -3,19 +3,11 @@ import { RolesService } from "../services/rolesService";
 
 export class RolesController{
     async retornaTodasRoles(req: Request, res: Response){
-        const rolesService = new RolesService()
-        const lista_roles = await rolesService 
+        const lista_roles = await new RolesService() 
                 .retornaRoles()
-                .catch(()=>{
-                    res.json({
-                        message: "Algum problema houve",
-                        status: 1
-                    })
-                    .send()
+                .catch((erro)=>{
+                    return res.status(422).json({message: erro.message, status: 1})
                 })
-        return res.json({
-            lista: lista_roles,
-            status: 0
-        })
+        return res.json({message: lista_roles,status: 0})
     }
 }
