@@ -15,6 +15,8 @@ AppDataSource.initialize()
 
 app.use(express.json());
 app.use(rotas)
+require("dotenv-safe").config();
+export const jwt = require('jsonwebtoken');
 
 app.listen(PORT, () => {
     console.log(`Server is run in ${PORT}`);
