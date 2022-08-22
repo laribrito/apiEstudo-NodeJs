@@ -6,7 +6,8 @@ import {
     PrimaryGeneratedColumn, 
     CreateDateColumn, 
     UpdateDateColumn, 
-    Column
+    Column,
+    JoinColumn
 } from "typeorm"
 import { Roles } from "./roles";
 import { Activities } from "./activities";
@@ -25,14 +26,15 @@ export class Users {
     @Column()
     password: string;
 
+    @ManyToOne(() => Roles, (role_) => Roles.User)
+    @JoinColumn({name: 'role_id'})
+    fk_role_id: Roles
+
     @CreateDateColumn({update: false}) 
     created_at: Date;
 
     @UpdateDateColumn() 
     updated_at: Date;
-
-    @ManyToOne(() => Roles, (role_) => Roles.User)
-    role_: Roles
 
     @ManyToMany(() => Activities)
     @JoinTable()
