@@ -1,6 +1,5 @@
 import { Roles } from "../entities/roles";
 import { AppDataSource } from "../db_connection";
-import { ITokenRequest, TokenService } from "./tokenService";
 
 interface IRolesRequestName{
     role_name: string
@@ -17,18 +16,7 @@ interface IRolesRequestFull{
 
 export class RoleService{
     repository = AppDataSource.getRepository(Roles)
-    async novaRole({role_name}:IRolesRequestName, {token}:ITokenRequest){
-        // verifica o token
-        const user = await new TokenService().verificaToken({token})
-        if (!user){ 
-            throw new Error(String("Você não tem autorização"))
-        }
-
-        // ERRO: não tem permissão (só usuários com role==1 podem alterar uma role)
-        if(user.fk_role_id.role_id!=1){
-            throw new Error("Você não tem permissão")
-        }
-
+    async novaRole({role_name}:IRolesRequestName){
         // ERRO: o campo é obrigatório
         if(!role_name){
             throw new Error("'role_name' é obrigatório")
@@ -53,18 +41,7 @@ export class RoleService{
         return role
     }
 
-    async atualizaRole({role_id, role_name}:IRolesRequestFull, {token}:ITokenRequest){
-        // verifica o token
-        const user = await new TokenService().verificaToken({token})
-        if (!user){ 
-            throw new Error(String("Você não tem autorização"))
-        }
-
-        // ERRO: não tem permissão (só usuários com role==1 podem alterar uma role)
-        if(user.fk_role_id.role_id!=1){
-            throw new Error("Você não tem permissão")
-        }
-
+    async atualizaRole({role_id, role_name}:IRolesRequestFull){
         // ERRO: todos os campos são obrigatórios
         if(!role_id){
             throw new Error("'role_id' é obrigatório")
@@ -97,18 +74,7 @@ export class RoleService{
         return roleAtualizada
     }
 
-    async pegaUmaRolePeloId({role_id}:IRolesRequestId, {token}:ITokenRequest){
-        // verifica o token
-        const user = await new TokenService().verificaToken({token})
-        if (!user){ 
-            throw new Error(String("Você não tem autorização"))
-        }
-
-        // ERRO: não tem permissão (só usuários com role==1 podem alterar uma role)
-        if(user.fk_role_id.role_id!=1){
-            throw new Error("Você não tem permissão")
-        }
-
+    async pegaUmaRolePeloId({role_id}:IRolesRequestId){
         // SUCESSO
         const busca = await this.repository.findOne({where: {role_id: role_id}})
         if(!busca){
@@ -118,18 +84,7 @@ export class RoleService{
         }
     }
 
-    async pegaUmaRolePeloNome({role_name}:IRolesRequestName, {token}:ITokenRequest){
-        // verifica o token
-        const user = await new TokenService().verificaToken({token})
-        if (!user){ 
-            throw new Error(String("Você não tem autorização"))
-        }
-
-        // ERRO: não tem permissão (só usuários com role==1 podem alterar uma role)
-        if(user.fk_role_id.role_id!=1){
-            throw new Error("Você não tem permissão")
-        }
-
+    async pegaUmaRolePeloNome({role_name}:IRolesRequestName){
         // SUCESSO
         const busca = await this.repository.findOne({where: {role_name: role_name}})
         if(!busca){
@@ -139,20 +94,9 @@ export class RoleService{
         }
     }
 
-    async apagaUmaRolePeloId({role_id}:IRolesRequestId, {token}:ITokenRequest){
-        // verifica o token
-        const user = await new TokenService().verificaToken({token})
-        if (!user){ 
-            throw new Error(String("Você não tem autorização"))
-        }
-
-        // ERRO: não tem permissão (só usuários com role==1 podem alterar uma role)
-        if(user.fk_role_id.role_id!=1){
-            throw new Error("Você não tem permissão")
-        }
-
+    async apagaUmaRolePeloId({role_id}:IRolesRequestId){
         // SUCESSO
-        const busca = await this.pegaUmaRolePeloId({role_id}, {token})
+        const busca = await this.pegaUmaRolePeloId({role_id})
         if(busca){
             await this.repository.delete({role_id})
                 .catch(() => {
@@ -164,20 +108,9 @@ export class RoleService{
         }
     }
 
-    async apagaUmaRolePeloName({role_name}:IRolesRequestName, {token}:ITokenRequest){
-        // verifica o token
-        const user = await new TokenService().verificaToken({token})
-        if (!user){ 
-            throw new Error(String("Você não tem autorização"))
-        }
-
-        // ERRO: não tem permissão (só usuários com role==1 podem alterar uma role)
-        if(user.fk_role_id.role_id!=1){
-            throw new Error("Você não tem permissão")
-        }
-
+    async apagaUmaRolePeloName({role_name}:IRolesRequestName){
         // SUCESSO
-        const busca = await this.pegaUmaRolePeloNome({role_name}, {token})
+        const busca = await this.pegaUmaRolePeloNome({role_name})
         if(busca){
             await this.repository.delete({role_name: role_name})
                 .catch(() => {
