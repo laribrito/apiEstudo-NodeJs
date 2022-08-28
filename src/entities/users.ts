@@ -1,7 +1,5 @@
 import { 
     Entity, 
-    JoinTable, 
-    ManyToMany, 
     ManyToOne, 
     PrimaryGeneratedColumn, 
     CreateDateColumn, 
@@ -10,7 +8,6 @@ import {
     JoinColumn
 } from "typeorm"
 import { Roles } from "./roles";
-import { Activities } from "./activities";
 
 @Entity()
 export class Users {
@@ -35,10 +32,4 @@ export class Users {
 
     @UpdateDateColumn() 
     updated_at: Date;
-
-    @ManyToMany(() => Activities)
-    @JoinTable()
-    activities: Activities[]
-    
-
 }

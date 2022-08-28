@@ -1,4 +1,5 @@
-import { Column, Entity, CreateDateColumn, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm"
+import { Column, Entity, CreateDateColumn, PrimaryGeneratedColumn, ManyToMany, JoinTable } from "typeorm"
+import { Users } from "./users";
 
 @Entity()
 export class Activities{
@@ -12,8 +13,12 @@ export class Activities{
     description: string
 
     @Column()
-    due_date: Date;
+    due_date: string;
     
     @CreateDateColumn()
     created_at: Date;
+
+    @ManyToMany(() => Users)
+    @JoinTable()
+    user: Users[]
 }

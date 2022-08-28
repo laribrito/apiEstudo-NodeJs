@@ -6,6 +6,8 @@ import { UsersController } from "./controllers/usersController";
 import { TokenController } from "./controllers/tokenController";
 import { PostController } from "./controllers/postController";
 import { PostsController } from "./controllers/postsController";
+import { ActivityController } from "./controllers/activityController";
+import { ActivitiesController } from "./controllers/activitiesController";
 
 const rotas = Router();
 const tokenController= new TokenController();
@@ -15,6 +17,8 @@ const roleController= new RoleController();
 const rolesController= new RolesController();
 const postController = new PostController();
 const postsController = new PostsController();
+const actvController = new ActivityController();
+const actvsController = new ActivitiesController();
 
 rotas.get('/', (_request, res) => {
     res.json({
@@ -50,5 +54,14 @@ rotas.delete("/post/delete/:post_id", postController.apagaUmPost)
 rotas.get("/posts/all", postsController.retornaTodosOsPosts)
 rotas.get("/posts/:user_id", postsController.retornaPostsDeUmUser)
 rotas.get("/posts/", postsController.retornaPostsUserLogado)
+
+// Activities
+rotas.post("/activity", actvController.criaActivity)
+rotas.put("/activity/put/description", actvController.editaActivityDescription)
+rotas.put("/activity/put/date", actvController.editaActivityDueDate)
+rotas.get("/activity/:activity_id", actvController.pegaUmaActivity)
+rotas.delete("/activity/:activity_id", actvController.apagaUmaActivity)
+rotas.get("/activities/all", actvsController.retornaAllActivities)
+rotas.get("/activities/", actvsController.retornaActivitiesUserLogado)
 
 export {rotas};
