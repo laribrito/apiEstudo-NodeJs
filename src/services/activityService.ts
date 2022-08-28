@@ -1,10 +1,9 @@
-import { Equal, Raw } from "typeorm";
+import { Raw } from "typeorm";
 import { AppDataSource } from "../db_connection";
 import { Activities } from "../entities/activities";
 import { Users } from "../entities/users";
 import { RoleService } from "./roleService";
 import { ITokenRequest, TokenService } from "./tokenService";
-import { UserService } from "./userService";
 
 interface IActvRequestFull{
     value: number
@@ -37,9 +36,7 @@ export class ActivityService{
         }
 
         // ERRO: não tem permissão (só usuários com role==1 podem alterar uma role)
-        const role_id=Number(1)
-        const role = await new RoleService().pegaUmaRolePeloId({role_id})
-        const role_user = await AppDataSource.getRepository(Users).findOneBy({user_id: user.user_id, fk_role_id: role})
+        const role_user=await new RoleService().verificaRole({user})
         if(!role_user){
             throw new Error("Você não tem permissão")
         }
@@ -90,9 +87,7 @@ export class ActivityService{
         }
 
         // ERRO: não tem permissão (só usuários com role==1 podem alterar uma role)
-        const role_id=Number(1)
-        const role = await new RoleService().pegaUmaRolePeloId({role_id})
-        const role_user = await AppDataSource.getRepository(Users).findOneBy({user_id: user.user_id, fk_role_id: role})
+        const role_user=await new RoleService().verificaRole({user})
         if(!role_user){
             throw new Error("Você não tem permissão")
         }
@@ -129,9 +124,7 @@ export class ActivityService{
         }
 
         // ERRO: não tem permissão (só usuários com role==1 podem alterar uma role)
-        const role_id=Number(1)
-        const role = await new RoleService().pegaUmaRolePeloId({role_id})
-        const role_user = await AppDataSource.getRepository(Users).findOneBy({user_id: user.user_id, fk_role_id: role})
+        const role_user=await new RoleService().verificaRole({user})
         if(!role_user){
             throw new Error("Você não tem permissão")
         }
@@ -185,9 +178,7 @@ export class ActivityService{
         }
 
         // ERRO: não tem permissão (só usuários com role==1 podem alterar uma role)
-        const role_id=Number(1)
-        const role = await new RoleService().pegaUmaRolePeloId({role_id})
-        const role_user = await AppDataSource.getRepository(Users).findOneBy({user_id: user.user_id, fk_role_id: role})
+        const role_user=await new RoleService().verificaRole({user})
         if(!role_user){
             throw new Error("Você não tem permissão")
         }
